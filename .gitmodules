@@ -1,0 +1,3 @@
+[submodule "smiles-gpt"]
+	path = smiles-gpt
+	url = https://github.com/sanjaradylov/smiles-gpt.git
