@@ -20,9 +20,9 @@ model.set_active_adapters("MAPT_adapter") # freeze all adapters except this one
 batch_size = 256
 
 autoreg_model = gpt.GPT2LitModel(
-    model, 
+    transformer=model, 
     batch_size=batch_size,
-    learning_rate=1e-4,
+    learning_rate=1e-3,
     weight_decay=0.01,
     adam_eps=1e-8,
     adam_betas=(0.9, 0.999),
@@ -37,8 +37,19 @@ dataset = gpt.LMDataModule(data_path, tokenizer,
 
 # model training
 from pytorch_lightning import Trainer
+from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
+
+checkpoint = ModelCheckpoint(dirpath='checkpoints/trained_models')
+
+early_stopping = EarlyStopping(
+    monitor='ppl_epoch',
+    min_delta=0,
+    patience = 3,
+    verbose=True,
+    mode='min'
+)
 
 trainer = Trainer(max_epochs=50, gpus=4)
 trainer.fit(autoreg_model, dataset)
 
-autoreg_model.save_pretrained('/trained_models')
+autoreg_model.save_pretrained('checkpoints/trained_models')
