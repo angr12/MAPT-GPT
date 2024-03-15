@@ -1,12 +1,12 @@
 import sys
-sys.path.append('scripts/smiles-gpt/')
+sys.path.append('/rds/general/user/rla120/home/FYP/GPT/scripts/smiles-gpt/smiles_gpt')
 
 import smiles_gpt as gpt
 import pandas as pd
 
 # load pre-trained smiles-gpt models and tokenizer
-from transformers import GPT2Config, GPT2LMHeadModel, PreTrainedTokenizerFastche 
-checkpoint = "checkpoints/benchmark-5m"
+from transformers import GPT2Config, GPT2LMHeadModel, PreTrainedTokenizerFast
+checkpoint = "/rds/general/user/rla120/home/FYP/GPT/scripts/smiles-gpt/checkpoints/benchmark-5m"
 config = GPT2Config.from_pretrained(checkpoint)
 model = GPT2LMHeadModel.from_pretrained(checkpoint)
 tokenizer = PreTrainedTokenizerFast.from_pretrained(checkpoint)
@@ -18,11 +18,12 @@ model.set_active_adapters("MAPT_adapter") # freeze all adapters except this one
 
 # call the autoregressive causal language model
 batch_size = 256
-
+ 
 autoreg_model = gpt.GPT2LitModel(
     transformer=model, 
     batch_size=batch_size,
     learning_rate=1e-3,
+    final_learning_rate=1e-5,
     weight_decay=0.01,
     adam_eps=1e-8,
     adam_betas=(0.9, 0.999),
@@ -30,7 +31,7 @@ autoreg_model = gpt.GPT2LitModel(
 
 
 # prepare training data
-data_path = './data_preprocessing/actives_list.csv'
+data_path = 'FYP/GPT/data_preprocessing/actives_list.csv'
 dataset = gpt.LMDataModule(data_path, tokenizer,
                            batch_size=batch_size,
                            num_workers=32)
@@ -39,7 +40,7 @@ dataset = gpt.LMDataModule(data_path, tokenizer,
 from pytorch_lightning import Trainer
 from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
 
-checkpoint = ModelCheckpoint(dirpath='checkpoints/trained_models')
+checkpoint_cb = ModelCheckpoint(dirpath='/rds/general/user/rla120/home/FYP/GPT/scripts/smiles-gpt/checkpoints/trained_models')
 
 early_stopping = EarlyStopping(
     monitor='ppl_epoch',
@@ -49,7 +50,15 @@ early_stopping = EarlyStopping(
     mode='min'
 )
 
-trainer = Trainer(max_epochs=50, gpus=4)
+trainer = Trainer(
+    strategy="ddp",
+    callbacks=[checkpoint_cb, early_stopping],
+    max_epochs=30,
+    min_epochs=15,
+    val_check_interval=0.4,
+    limit_train_batches=0.5,
+    log_every_n_steps=200,
+)
 trainer.fit(autoreg_model, dataset)
 
-autoreg_model.save_pretrained('checkpoints/trained_models')
+autoreg_model.save_pretrained('/rds/general/user/rla120/home/FYP/GPT/scripts/smiles-gpt/checkpoints/trained_models')
