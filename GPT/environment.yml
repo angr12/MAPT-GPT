@@ -19,6 +19,6 @@ dependencies:
   - pip:
     - tokenizers
     - adapter-transformers
-    - pytorch-lightning
+    - pytorch-lightning==1.9.0
     - bertviz
     - selfies
