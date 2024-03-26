@@ -8,6 +8,9 @@ config = GPT2Config.from_pretrained(checkpoint)
 model = GPT2LMHeadModel.from_pretrained(checkpoint)
 tokenizer = PreTrainedTokenizerFast.from_pretrained(checkpoint)
 
+# Set pad token
+tokenizer.pad_token = "<pad>"
+
 # add adapter
 model.add_adapter("MAPT_adapter")
 model.train_adapter("MAPT_adapter")
@@ -50,12 +53,12 @@ early_stopping = EarlyStopping(
 trainer = Trainer(
     strategy="ddp",
     callbacks=[checkpoint_cb, early_stopping],
-    max_epochs=30,
+    max_epochs=100,
     min_epochs=15,
     val_check_interval=0.4,
     limit_train_batches=0.5,
-    log_every_n_steps=200,
-    gpus=8
+    log_every_n_steps=10,
+    gpus=-1
 )
 trainer.fit(autoreg_model, dataset)
 
