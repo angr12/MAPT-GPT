@@ -22,9 +22,9 @@ batch_size = 256
 autoreg_model = gpt.GPT2LitModel(
     transformer=model, 
     batch_size=batch_size,
-    learning_rate=1e-3,
+    learning_rate=0.008,
     final_learning_rate=1e-5,
-    weight_decay=0.01,
+    weight_decay=6e-5,
     adam_eps=1e-8,
     adam_betas=(0.9, 0.999),
     scheduler_T_max=150_000)
@@ -53,7 +53,7 @@ early_stopping = EarlyStopping(
 trainer = Trainer(
     strategy="ddp",
     callbacks=[checkpoint_cb, early_stopping],
-    max_epochs=100,
+    max_epochs=35,
     min_epochs=15,
     val_check_interval=0.4,
     limit_train_batches=0.5,
@@ -62,4 +62,4 @@ trainer = Trainer(
 )
 trainer.fit(autoreg_model, dataset)
 
-autoreg_model.save_pretrained('checkpoints/trained_models')
+autoreg_model.transformer.save_pretrained('checkpoints/trained_models/model/')
