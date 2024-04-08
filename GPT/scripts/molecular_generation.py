@@ -1,5 +1,6 @@
 import smiles_gpt as gpt
 from transformers import pipeline, GPT2Config, GPT2LMHeadModel, PreTrainedTokenizerFast
+import pandas as pd
 
 # load trained model
 model = GPT2LMHeadModel.from_pretrained("checkpoints/trained_models/model")
@@ -12,7 +13,20 @@ print(f'Loaded adapter: {model.active_adapters}') # debug line
 tokenizer.pad_token = "<pad>"
 
 # create molecule generation pipeline 
-generator = pipeline('text-generation', model=model, tokenizer=tokenizer)
-output = generator('C', max_length=50)
+generator = pipeline(
+    'text-generation', 
+    model=model, 
+    tokenizer=tokenizer, 
+    do_sample=True,
+    top_k=50,
+    num_return_sequences=50
+    )
+output = generator('', max_length=50)
 
-print(output)
+# for testing/debug
+# for i in range(len(output)):
+#     print(f'Generated molecule: {output[i]}')
+
+# save generated molecules to csv
+df = pd.DataFrame(output)
+df.to_csv('generated_molecules/top_k.csv', index=False)
