@@ -19,5 +19,5 @@ for c, mol in enumerate(molecules['Molecules']):
 print(f'Valid molecules: {len(valid_molecules)}')
 print(f'Invalid molecules: {len(invalid_molecules)}')
 
-# valid_molecules = pd.DataFrame(valid_molecules, columns=['Valid_Molecules'])
-# valid_molecules.to_csv(folder_path + 'valid_molecules.csv', index=False)
+valid_molecules = pd.DataFrame(valid_molecules, columns=['Valid_Molecules'])
+valid_molecules.to_csv(folder_path + 'valid_molecules.csv', index=False)
