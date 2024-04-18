@@ -5,7 +5,6 @@ import os
 
 def draw_molecule(path, output_path):
     "Function to draw molecules from the csv file of SMILES strings and saves them as images"
-    
     molecules = pd.read_csv(path)
     
     if not os.path.exists(output_path):
