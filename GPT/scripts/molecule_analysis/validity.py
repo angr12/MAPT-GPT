@@ -21,8 +21,11 @@ def filter_valid(input_path, output_path, output_name='valid_molecules.csv'):
 
     valid_molecules = pd.DataFrame(valid_molecules, columns=['Valid_Molecules'])
     valid_molecules.to_csv(output_path + output_name, index=False)
+    
+    return len(valid_molecules)/len(molecules)
 
 if __name__ == '__main__':
     path = 'scripts/generated_molecules/top_k.csv'
     folder_path = 'scripts/generated_molecules/'
-    filter_valid(path, folder_path)
+    validity = filter_valid(path, folder_path)
+    print(f'Validity of dataset: {validity}')
