@@ -25,7 +25,7 @@ def filter_valid(input_path, output_path, output_name='valid_molecules.csv'):
     return len(valid_molecules)/len(molecules)
 
 if __name__ == '__main__':
-    path = 'scripts/generated_molecules/top_k.csv'
+    path = 'scripts/generated_molecules/top_k_5000.csv'
     folder_path = 'scripts/generated_molecules/'
     validity = filter_valid(path, folder_path)
     print(f'Validity of dataset: {validity}')
