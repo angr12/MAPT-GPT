@@ -36,7 +36,7 @@ def internal_diversity(smiles1):
     mols = [Chem.MolFromSmiles(mol) for mol in smiles1 if Chem.MolFromSmiles(mol) is not None]
     fp = [FingerprintMols.FingerprintMol(mol, minPath=1, maxPath=7, fpSize=2048,
                                bitsPerHash=2, useHs=True, tgtDensity=0.0,
-                               minSize=128) for mol in mols]
+                               minSize=128) for mol in mols] # args to handle mismatch in fpSize
     
     T = []
     

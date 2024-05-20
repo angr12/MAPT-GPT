@@ -20,9 +20,14 @@ def append_QED(file_path):
 if __name__ == '__main__':
     path = 'scripts/generated_molecules/valid_molecules.csv'
     append_QED(path)
-
-
-
-
-
+    av_qed = pd.read_csv(path)['QED'].mean()
+    print(f'Average QED of dataset: {av_qed}')
     
+    training = pd.read_csv('scripts/data_preprocessing/actives.csv')
+    training_qed = []
+    for mol in training['Smiles'].astype(str):
+        if Chem.MolFromSmiles(mol) is not None:
+            m = Chem.MolFromSmiles(mol)
+            qed = QED.qed(m)
+            training_qed.append(qed)
+    print(f'Average QED of training set: {sum(training_qed)/len(training_qed)}')

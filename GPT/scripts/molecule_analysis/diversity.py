@@ -1,9 +1,11 @@
 import pandas as pd
+from rdkit import Chem
 
 def calculate_diversity(input_path: str):
     """Function to calculate diversity of generated molecules from a csv file"""
     molecules = pd.read_csv(input_path)
     molecules = molecules['Valid_Molecules']
+    molecules = [Chem.MolFromSmiles(mol) for mol in molecules]
     diversity = len(set(molecules))/len(molecules)
     
     return diversity 
