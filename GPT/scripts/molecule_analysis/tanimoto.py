@@ -4,7 +4,7 @@ from rdkit import DataStructs
 import pandas as pd
 import numpy as np
 
-def external_dviersity(smiles1, smiles2):
+def external_diversity(smiles1, smiles2):
     """
     Function to calculate the average Tanimoto similarity between two sets of molecules
     Based on https://arxiv.org/pdf/1708.08227
@@ -52,8 +52,9 @@ if __name__ == "__main__":
     training_set = pd.read_csv('scripts/data_preprocessing/actives.csv')
     print(training_set.head())
     
-    ed = external_dviersity(generated['Molecules'], training_set['Smiles'].astype(str))
-    print(f'External Diversity: {ed}')
+    ed = external_diversity(generated['Molecules'], training_set['Smiles'].astype(str))
     
     i_div = internal_diversity(generated['Molecules'])
+    
+    print(f'External Diversity: {ed}')
     print(f'Internal Diversity: {i_div}')
