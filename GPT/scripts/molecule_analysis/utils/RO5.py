@@ -12,6 +12,7 @@ def append_RO5(input_df: pd.DataFrame):
     HBD_list = list()
     LogP_list = list()
     num_v_list = list()
+    pass_list = list()
     
     # check for RO5 violations in each molecule
     for molecule in input_df:
@@ -22,6 +23,10 @@ def append_RO5(input_df: pd.DataFrame):
         LogP = Descriptors.MolLogP(m)
         
         num_v = [MW > 500, HBA > 10, HBD > 5, LogP > 5]
+        if sum(num_v) >= 2:
+            pass_list.append(False)
+        else:
+            pass_list.append(True)
         
         MW_list.append(MW)
         HBA_list.append(HBA)
@@ -30,7 +35,7 @@ def append_RO5(input_df: pd.DataFrame):
         num_v_list.append(sum(num_v))
         
     # append new rows to df
-    d = {'MW': MW_list, 'HBA': HBA_list, 'HBD': HBD_list, 'LogP': LogP_list, 'Num_violations': num_v_list}
+    d = {'MW': MW_list, 'HBA': HBA_list, 'HBD': HBD_list, 'LogP': LogP_list, 'Num_violations': num_v_list, 'Pass': pass_list}
     RO5 = pd.DataFrame(d)
     return RO5
     
@@ -42,7 +47,7 @@ if __name__ == "__main__":
     
     # add to the csv
     molecules_df = pd.concat([molecules_df, RO5_df], axis=1)
-    print(molecules_df.head())
+    # print(molecules_df.head())
     # print(molecules_df.shape)
     
     molecules_df.to_csv(path, index=False)
