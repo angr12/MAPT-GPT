@@ -21,7 +21,7 @@ def external_diversity(smiles1, smiles2):
     
     for i in fp1:
         for j in fp2:
-            T.append(DataStructs.TanimotoSimilarity(i, j))
+            T.append(1-DataStructs.TanimotoSimilarity(i, j))
     
     diversity = np.mean(T)
     return diversity
@@ -42,7 +42,7 @@ def internal_diversity(smiles1):
     
     for i in range(len(fp)-1):
         s = DataStructs.BulkTanimotoSimilarity(fp[i], fp[i+1:])
-        T.extend(s)
+        T.extend(1-s)
 
     return(np.mean(T))
 

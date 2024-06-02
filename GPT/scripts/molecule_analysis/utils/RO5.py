@@ -43,11 +43,12 @@ if __name__ == "__main__":
     path = 'scripts/generated_molecules/valid_molecules.csv'
     molecules_df = pd.read_csv(path)
     RO5_df = append_RO5(molecules_df['Smiles'])
-    print(RO5_df.head())
+    print(RO5_df['Pass'].value_counts())
+    print(f'Number of molecules that pass RO5: {RO5_df["Pass"].value_counts()[True]}')
     
     # add to the csv
     molecules_df = pd.concat([molecules_df, RO5_df], axis=1)
     # print(molecules_df.head())
     # print(molecules_df.shape)
     
-    molecules_df.to_csv(path, index=False)
+    # molecules_df.to_csv(path, index=False)
