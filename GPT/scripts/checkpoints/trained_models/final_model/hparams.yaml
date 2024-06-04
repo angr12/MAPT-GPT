@@ -1,0 +1,10 @@
+adam_betas: !!python/tuple
+- 0.9
+- 0.999
+adam_eps: 1.0e-08
+batch_size: 128
+checkpoint: ''
+final_learning_rate: 1.0e-05
+learning_rate: 0.0048
+scheduler_T_max: 150000
+weight_decay: 4.56e-05
