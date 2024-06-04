@@ -1,9 +1,9 @@
 import pandas as pd
 
-generated_mols = pd.read_csv('scripts/generated_molecules/generated.csv')
-training_mols = pd.read_csv('scripts/data_preprocessing/actives_list.csv')
+generated_mols = pd.read_csv('scripts/generated_molecules/generated200_p96.csv')
+training_mols = pd.read_csv('scripts/data_preprocessing/actives_list.csv', dtype=str)
 
-
+    
 # calculate validity
 from utils.validity import *
 valid_df, validity = filter_valid(generated_mols)
@@ -13,7 +13,8 @@ output_df = valid_df.copy()
 
 # calculate druglikeness
 from utils.QED import *
-QED_df = append_QED(valid_df['Smiles'])
+print(valid_df.head())
+QED_df = append_QED(valid_df['Smiles'].astype(str))
 
 av_qed = QED_df['QED'].mean()
 print(f'Average QED of Generated dataset: {av_qed}')
@@ -41,10 +42,18 @@ print(f'Min SA score: {SAscore_df["SA_Score"].min()}')
 
 #calculate diversity
 from utils.tanimoto import *
-# ed = external_diversity(valid_df['Smiles'], training_mols['Molecules'])
+from utils.diversity import *
+from utils.novelty import *
+ed = external_diversity(valid_df['Smiles'], training_mols)
 i_div = internal_diversity(valid_df['Smiles'])
 
-# print(f'External Diversity: {ed}')
-print(f'Internal Diversity: {i_div}')
+print(f'External Tanimoto Diversity: {ed}')
+print(f'Internal Tanimoto Diversity: {i_div}')
+
+novelty = novelty(training_mols, valid_df['Smiles'])
+print(f'Simple Novelty of dataset: {novelty*100}%')
+
+diversity = calculate_diversity(valid_df['Smiles'])
+print(f'Simple Diversity of dataset: {diversity} or {diversity*100}%')
 
 # valid_df.to_csv( 'scripts/generated_molecules/'+ 'valid_molecules.csv', index=False)

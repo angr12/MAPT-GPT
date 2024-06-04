@@ -20,7 +20,7 @@ generator = pipeline(
     do_sample=True,
     top_k=50,
     top_p=0.95,
-    num_return_sequences=100
+    num_return_sequences=200
     )
 output = generator('', max_length=50)
 

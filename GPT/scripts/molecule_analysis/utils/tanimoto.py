@@ -10,6 +10,9 @@ def external_diversity(smiles1, smiles2):
     Based on https://arxiv.org/pdf/1708.08227
     """
     
+    smiles1 = map(str, smiles1) # convert to string
+    smiles2 = map(str, smiles2) 
+    
     mols_1 = [Chem.MolFromSmiles(mol) for mol in smiles1 if Chem.MolFromSmiles(mol) is not None] # convert SMILES strings to RDKit molecules
     mols_2 = [Chem.MolFromSmiles(mol) for mol in smiles2 if Chem.MolFromSmiles(mol) is not None] 
     
@@ -32,6 +35,7 @@ def internal_diversity(smiles1):
     Based on https://arxiv.org/pdf/1708.08227
     """
     A = len(smiles1)
+    smiles1 = map(str, smiles1) 
     
     mols = [Chem.MolFromSmiles(mol) for mol in smiles1 if Chem.MolFromSmiles(mol) is not None]
     fp = [FingerprintMols.FingerprintMol(mol, minPath=1, maxPath=7, fpSize=2048,
@@ -42,7 +46,9 @@ def internal_diversity(smiles1):
     
     for i in range(len(fp)-1):
         s = DataStructs.BulkTanimotoSimilarity(fp[i], fp[i+1:])
-        T.extend(1-s)
+        T.extend(s)
+    
+    T = [1-similarity for similarity in T]
 
     return(np.mean(T))
 

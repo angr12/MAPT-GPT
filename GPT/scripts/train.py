@@ -17,14 +17,14 @@ model.train_adapter("MAPT_adapter")
 model.set_active_adapters("MAPT_adapter") # freeze all adapters except this one
 
 # call the autoregressive causal language model
-batch_size = 256
+batch_size = 128
  
 autoreg_model = gpt.GPT2LitModel(
     transformer=model, 
     batch_size=batch_size,
-    learning_rate=0.008,
+    learning_rate=0.005,
     final_learning_rate=1e-5,
-    weight_decay=6e-5,
+    weight_decay=4.6e-5,
     adam_eps=1e-8,
     adam_betas=(0.9, 0.999),
     scheduler_T_max=150_000)

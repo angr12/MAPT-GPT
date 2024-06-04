@@ -8,6 +8,9 @@ def novelty(training, generated):
     generated_set = set(generated)
     
     new_molecules = generated_set - training_set
+    for i in generated:
+        if i in training_set:
+            print(f'Repeated Molecule: {i}')
     return len(new_molecules)/len(generated_set)
     
 
