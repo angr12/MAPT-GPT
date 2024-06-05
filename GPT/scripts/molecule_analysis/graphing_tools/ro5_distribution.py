@@ -24,10 +24,16 @@ av_vio_cur = curated_ro5['Num_violations'].mean()
 print(f'Average number of RO5 violations of Generated: {av_vio_gen}')
 print(f'Average number of RO5 violations of Training: {av_vio_train}')
 print(f'Average number of RO5 violations of Curated: {av_vio_cur}')
+print('\n')
 
 print(f'Max/Min number of RO5 violations of Generated: {generated_ro5["Num_violations"].max()} {generated_ro5["Num_violations"].min()}')
 print(f'Max/Min number of RO5 violations of Training: {training_ro5["Num_violations"].max()} {training_ro5["Num_violations"].min()}')
 print(f'Max/Min number of RO5 violations of Curated: {curated_ro5["Num_violations"].max()} {curated_ro5["Num_violations"].min()}')
+print('\n')
+
+print(f'Percentage of molecules that pass RO5 of Generated: {generated_ro5["Pass"].value_counts()[True]/len(generated_ro5)*100}%')
+print(f'Percentage of molecules that pass RO5 of Training: {training_ro5["Pass"].value_counts()[True]/len(training_ro5)*100}%')
+print(f'Percentage of molecules that pass RO5 of Curated: {curated_ro5["Pass"].value_counts()[True]/len(curated_ro5)*100}%')
 
 plt.hist(generated_ro5['Num_violations'], label='Generated', range=(0,5), align='left', bins=5)
 plt.axvline(x=generated_ro5['Num_violations'].mean(), color='r', linestyle='-', label='Mean Number of Violations')
