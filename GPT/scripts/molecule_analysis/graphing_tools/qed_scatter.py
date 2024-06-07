@@ -21,8 +21,19 @@ training_mols.insert(len(training_mols.columns), 'QED', training_qed)
 curated = generated[generated.QED > 0.67]
 # print(curated.head())
 # print(curated.shape)
+print(f'Avg QED of Training: {training_mols["QED"].mean()}')
+print(f'Avg QED of Generated: {generated["QED"].mean()}')
+print(f'Avg QED of Curated: {curated["QED"].mean()}')
 
-av_qed = generated_qed['QED'].mean()
+print('\n')
+print(f'Max QED of Training: {training_mols["QED"].max()}')
+print(f'Max QED of Generated: {generated["QED"].max()}')
+print(f'Max QED of Curated: {curated["QED"].max()}')
+
+print('\n')
+print(f'Min QED of Training: {training_mols["QED"].min()}')
+print(f'Min QED of Generated: {generated["QED"].min()}')
+print(f'Min QED of Curated: {curated["QED"].min()}')
 
 # box plot
 generated_arr = np.asarray(generated_qed['QED'])
@@ -34,4 +45,7 @@ plt.boxplot(data)
 plt.ylabel('QED')
 plt.title('QED of Generated vs Training Set of Molecules')
 plt.xticks([1, 2, 3], ['Generated', 'Training', 'Generated (Curated)'])
+plt.axhline(y=0.67, color='b', linestyle=':', label='Attractive QED')
+plt.axhline(y=0.49, color='r', linestyle=':', label='Unattractive QED')
+plt.legend()
 plt.show()

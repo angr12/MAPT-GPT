@@ -19,8 +19,22 @@ print(f'External Diversity of Curated: {curated_ed}')
 
 # Bar chart
 data = [generated_ed, curated_ed]
-plt.bar(['Generated', 'Curated'], data)
+
+# Define x coordinates
+x = np.arange(len(['Generated', 'Curated'])*0.7)
+
+# Define bar width
+bar_width = 0.4
+
+# Plot bars
+plt.bar(x, data, width=bar_width)
+
+# Replace numerical x-axis labels with your labels
+plt.xticks(x, ['Generated', 'Curated'])
+
+# Other plot settings
+plt.ylim(0, 1.1)
 plt.ylabel('External Diversity')
-plt.xlabel('Dataset')
+plt.xlabel('Dataset of Molecules', labelpad=10)
 plt.title('External Diversity of Generated and Curated Molecules')
 plt.show()

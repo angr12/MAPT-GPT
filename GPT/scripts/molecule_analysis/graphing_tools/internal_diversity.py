@@ -21,8 +21,9 @@ print(f'Internal Diversity of Curated: {curated_div}')
 
 # Bar chart
 data = [training_div, generated_div, curated_div]
-plt.bar(['Training', 'Generated', 'Curated'], data)
+plt.bar(['Training', 'Generated', 'Curated'], data, width=0.4)
+plt.ylim(0, 1.1)
 plt.ylabel('Internal Diversity')
-plt.xlabel('Dataset')
+plt.xlabel('Dataset of Molecules', labelpad=10)
 plt.title('Internal Diversity of Training, Generated and Curated Molecules')
 plt.show()
