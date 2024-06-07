@@ -43,9 +43,11 @@ data = [generated_arr, training_arr, curated_arr]
 
 plt.boxplot(data)
 plt.ylabel('QED')
+plt.xlabel('Dataset of Molecules')
 plt.title('QED of Generated vs Training Set of Molecules')
 plt.xticks([1, 2, 3], ['Generated', 'Training', 'Generated (Curated)'])
-plt.axhline(y=0.67, color='b', linestyle=':', label='Attractive QED')
-plt.axhline(y=0.49, color='r', linestyle=':', label='Unattractive QED')
+plt.ylim(0, 1.1)
+plt.axhline(y=0.67, color='b', linestyle=':', label='Min Attractive QED')
+plt.axhline(y=0.49, color='r', linestyle=':', label='Max Unattractive QED')
 plt.legend()
 plt.show()
