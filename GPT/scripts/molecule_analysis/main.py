@@ -10,7 +10,7 @@ valid_df, validity = filter_valid(generated_mols)
 print(f'Validity of dataset: {validity*100}%')
 
 output_df = valid_df.copy()
-# valid_df.to_csv('scripts/generated_molecules/valid_molecules.csv', index=False)
+valid_df.to_csv('scripts/generated_molecules/valid_molecules.csv', index=False)
 
 
 # RO5 Calculations

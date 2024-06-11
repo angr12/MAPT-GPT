@@ -20,7 +20,9 @@ training_mols.insert(len(training_mols.columns), 'QED', training_qed)
 # Filter out molecules with QED > 0.67
 curated = generated[generated.QED > 0.67]
 # print(curated.head())
-# print(curated.shape)
+print(curated.shape)
+print(f'Percentage of molecules with QED > 0.67: {curated.shape[0]/generated.shape[0]}')
+# curated.to_csv('scripts/generated_molecules/curated_molecules.csv', index=False)
 print(f'Avg QED of Training: {training_mols["QED"].mean()}')
 print(f'Avg QED of Generated: {generated["QED"].mean()}')
 print(f'Avg QED of Curated: {curated["QED"].mean()}')
@@ -42,7 +44,7 @@ curated_arr = np.asarray(curated['QED'])
 data = [generated_arr, training_arr, curated_arr]
 
 plt.boxplot(data)
-plt.ylabel('QED')
+plt.ylabel('QED (A.U.)')
 plt.xlabel('Dataset of Molecules')
 plt.title('QED of Generated vs Training Set of Molecules')
 plt.xticks([1, 2, 3], ['Generated', 'Training', 'Generated (Curated)'])

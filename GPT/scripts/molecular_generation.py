@@ -19,7 +19,7 @@ generator = pipeline(
     tokenizer=tokenizer, 
     do_sample=True,
     top_k=50,
-    top_p=0.95,
+    top_p=0.96,
     num_return_sequences=200
     )
 output = generator('', max_length=50)

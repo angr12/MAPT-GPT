@@ -34,7 +34,7 @@ print(f'Min SA Score of Training: {training_sa.min()}')
 # Box plot
 data = [np.asarray(generated_sa['SA_Score']), np.asarray(training_sa['SA_Score']), np.asarray(curated_sa['SA_Score'])]
 plt.boxplot(data)
-plt.ylabel('SA Score')
+plt.ylabel('SA Score (A.U.)')
 plt.xlabel('Dataset of Molecules')
 plt.title('SA Score of Generated vs Training Set of Molecules')
 plt.xticks([1, 2, 3], ['Generated', 'Training', 'Generated (Curated)'])
