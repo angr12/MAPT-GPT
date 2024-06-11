@@ -26,7 +26,7 @@ def objective(trial):
     tokenizer.pad_token = "<pad>"
     
     # load training data
-    data_path = 'data_preprocessing/actives_list.csv'
+    data_path = 'data_preprocessing/validation_actives.csv'
     dataset = gpt.LMDataModule(data_path, tokenizer,
                                batch_size=batch_size,
                                num_workers=32)
